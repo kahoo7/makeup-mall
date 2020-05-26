@@ -1,5 +1,6 @@
 <template>
   <div id="tab-bar">
+    <!-- cjt鸭屎 -->
     <slot></slot>
   </div>
 </template>
@@ -11,7 +12,7 @@
 </script>
 
 <style scoped>
-  @import "../../assets/styles/base.css";
+  /* @import "assets/styles/base.css"; */
 
   #tab-bar {
     display: flex;
