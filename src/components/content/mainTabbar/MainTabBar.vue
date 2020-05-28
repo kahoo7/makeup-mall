@@ -22,7 +22,7 @@
         <div slot="item-name">我的</div>
       </tab-bar-item>
     </tab-bar>
-    hhhh
+    <!-- hhhh -->
   </div>
 </template>
 
