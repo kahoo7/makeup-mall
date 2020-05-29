@@ -1,45 +1,59 @@
 <template>
-  <div id="home">
-		<!-- <h2>首页</h2> -->
+  <!-- <div id="home"> -->
+  <div id="home" style="padding-bottom:2000px"> 
+    <!-- 开发时给页面足够地空间下拉 -->
     <nav-bar class="home-nav">
-      <div slot="center">购物街</div>
+      <div slot="center">美妆城</div>
     </nav-bar>
-    <swiper>
-      <swiper-item v-for="item in banners" :key="item">
-        <a :href="item.link">
-          <img :src="item.image" alt="">
-        </a>
-      </swiper-item>
-    </swiper>
+    <home-swiper :banners="banners"/>
+    <recommend-view :recommends="recommends"/>
+    <feature-view/>
   </div>
 </template>
 
 <script>
   import navBar from 'common/navbar/NavBar'
+  import HomeSwiper from './childComp/HomeSwiper'
+  import RecommendView from './childComp/RecommendView'
+  import FeatureView from './childComp/FeatureView'
+
   import { getHomeMultiData } from 'network/home'
-  import { Swiper, SwiperItem } from 'common/swiper'
 
   export default {
     name: 'Home',
     data() {
       return {
-        banners: null
+        banners: null,
+        recommends: null
       }    
     },
     components:{
-      navBar, Swiper, SwiperItem
+      navBar, HomeSwiper, RecommendView, FeatureView
     },
     created() {
       getHomeMultiData().then(res => {
         console.log(res.data.data.banner.list);
-        this.banners = res.data.data.banner.list
+        console.log(res.data.data.recommend.list);
+        
+        this.banners = res.data.data.banner.list;
+        this.recommends = res.data.data.recommend.list;
+
       })
     }
   }
 </script>
 
 <style scoped>
+  #home {
+    width: 100%;
+    margin-bottom: 64px;
+  }
+
   .home-nav {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 9;
     background-color: var(--color-tint);
     text-align: center;
     color: #fff;
