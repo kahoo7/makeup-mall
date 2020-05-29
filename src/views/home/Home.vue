@@ -2,23 +2,33 @@
   <!-- <div id="home"> -->
   <div id="home" style="padding-bottom:2000px"> 
     <!-- 开发时给页面足够地空间下拉 -->
+
+    <!-- nav-bar：公共组件 -->
     <nav-bar class="home-nav">
       <div slot="center">美妆城</div>
     </nav-bar>
+
+    <!-- home-swiper：子组件 -->
     <home-swiper :banners="banners"/>
+
+    <!-- recommed-view：子组件-->
     <recommend-view :recommends="recommends"/>
+
+    <!-- feature-view：子组件 -->
     <feature-view/>
   </div>
 </template>
 
 <script>
+  // 1.公共组件导入
   import navBar from 'common/navbar/NavBar'
+  // 2.子组件导入
   import HomeSwiper from './childComp/HomeSwiper'
   import RecommendView from './childComp/RecommendView'
   import FeatureView from './childComp/FeatureView'
-
+  // 3.功能函数导入
   import { getHomeMultiData } from 'network/home'
-
+  // 4.本组件对象
   export default {
     name: 'Home',
     data() {
