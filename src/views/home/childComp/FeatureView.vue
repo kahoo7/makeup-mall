@@ -13,7 +13,13 @@ s
 </script>
 
 <style scoped>
+  .feature-view{
+    border-bottom: 8px solid #eeeeee;
+
+  }
+
   .feature-view img{
     width: 100%;
+    
   }
 </style>

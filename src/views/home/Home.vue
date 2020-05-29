@@ -16,12 +16,16 @@
 
     <!-- feature-view：子组件 -->
     <feature-view/>
+
+    <!--  -->
+    <tab-control :titles="titles"/>
   </div>
 </template>
 
 <script>
   // 1.公共组件导入
   import NavBar from 'common/navbar/NavBar'
+  import TabControl from 'common/tabcontrol/TabControl'
   // 2.子组件导入
   import HomeSwiper from './childComp/HomeSwiper'
   import RecommendView from './childComp/RecommendView'
@@ -34,16 +38,17 @@
     data() {
       return {
         banners: null,
-        recommends: null
+        recommends: null,
+        titles: ['流行', '新品', '优惠'],
       }    
     },
     components:{
-      NavBar, HomeSwiper, RecommendView, FeatureView
+      NavBar, HomeSwiper, RecommendView, FeatureView, TabControl
     },
     created() {
       getHomeMultiData().then(res => {
-        console.log(res.data.data.banner.list);
-        console.log(res.data.data.recommend.list);
+        // console.log(res.data.data.banner.list);
+        // console.log(res.data.data.recommend.list);
         
         this.banners = res.data.data.banner.list;
         this.recommends = res.data.data.recommend.list;
