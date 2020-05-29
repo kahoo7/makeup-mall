@@ -21,7 +21,7 @@
 
 <script>
   // 1.公共组件导入
-  import navBar from 'common/navbar/NavBar'
+  import NavBar from 'common/navbar/NavBar'
   // 2.子组件导入
   import HomeSwiper from './childComp/HomeSwiper'
   import RecommendView from './childComp/RecommendView'
@@ -38,7 +38,7 @@
       }    
     },
     components:{
-      navBar, HomeSwiper, RecommendView, FeatureView
+      NavBar, HomeSwiper, RecommendView, FeatureView
     },
     created() {
       getHomeMultiData().then(res => {
