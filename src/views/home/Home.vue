@@ -1,7 +1,5 @@
 <template>
-  <!-- <div id="home"> -->
-  <div id="home" style="padding-bottom:2000px"> 
-    <!-- 开发时给页面足够地空间下拉 -->
+  <div id="home" > 
 
     <!-- nav-bar：公共组件 -->
     <nav-bar class="home-nav">
@@ -18,7 +16,112 @@
     <feature-view/>
 
     <!--  -->
-    <tab-control :titles="titles"/>
+    <tab-control class="tab-control" :titles="titles"/>
+
+    <!-- <div class="space">
+      <ul>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+      </ul>
+    </div> -->
   </div>
 </template>
 
@@ -39,7 +142,7 @@
       return {
         banners: null,
         recommends: null,
-        titles: ['流行', '新品', '优惠'],
+        titles: ['流行', '新品', '精选'],
       }    
     },
     components:{
@@ -72,5 +175,12 @@
     background-color: var(--color-tint);
     text-align: center;
     color: #fff;
+  }
+
+  .tab-control {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 44px;
+    z-index: 8;
   }
 </style>
