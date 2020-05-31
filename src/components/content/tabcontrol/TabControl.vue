@@ -36,8 +36,8 @@
   #tab-control {
     width: 100%;
     display: flex;
-    height: 40px;
-    line-height: 40px;
+    height: 44px;
+    line-height: 44px;
     font-size: 14px;
   }
 

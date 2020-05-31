@@ -15,126 +15,26 @@
     <!-- feature-view：子组件 -->
     <feature-view/>
 
-    <!--  -->
+    <!-- tab-control：业务公共组件 -->
     <tab-control class="tab-control" :titles="titles"/>
 
-    <!-- <div class="space">
-      <ul>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-        <li>1</li>
-      </ul>
-    </div> -->
+    <!--  -->
+    <goods-list :GoodsList="GoodsList['pop'].list" />
+
   </div>
 </template>
 
 <script>
   // 1.公共组件导入
   import NavBar from 'common/navbar/NavBar'
-  import TabControl from 'common/tabcontrol/TabControl'
+  import TabControl from 'content/tabcontrol/TabControl'
+  import GoodsList from 'content/goodslist/GoodsList'
   // 2.子组件导入
   import HomeSwiper from './childComp/HomeSwiper'
   import RecommendView from './childComp/RecommendView'
   import FeatureView from './childComp/FeatureView'
   // 3.功能函数导入
-  import { getHomeMultiData } from 'network/home'
+  import { getHomeMultiData, getHomeGoodsList } from 'network/home'
   // 4.本组件对象
   export default {
     name: 'Home',
@@ -143,20 +43,39 @@
         banners: null,
         recommends: null,
         titles: ['流行', '新品', '精选'],
+        GoodsList: {
+          'pop' : {page : 0, list : []},
+          'new' : {page : 0, list : []},
+          'sell' : {page : 0, list : []},
+        }
       }    
     },
     components:{
-      NavBar, HomeSwiper, RecommendView, FeatureView, TabControl
+      NavBar, HomeSwiper, RecommendView, FeatureView, TabControl, GoodsList
     },
     created() {
-      getHomeMultiData().then(res => {
-        // console.log(res.data.data.banner.list);
-        // console.log(res.data.data.recommend.list);
-        
-        this.banners = res.data.data.banner.list;
-        this.recommends = res.data.data.recommend.list;
+      this.getHomeMultiData();
 
-      })
+      this.getHomeGoodsList('pop');
+      this.getHomeGoodsList('new');
+      this.getHomeGoodsList('sell');
+    },
+    methods: {
+      getHomeMultiData() {
+        getHomeMultiData().then(res => {
+          // console.log(res.data.data.banner.list);
+          // console.log(res.data.data.recommend.list);
+          this.banners = res.data.data.banner.list;
+          this.recommends = res.data.data.recommend.list;
+        })
+      },   
+      getHomeGoodsList(type) {
+        const page = this.GoodsList[type].page + 1;
+        getHomeGoodsList(type, page).then(res => {
+          this.GoodsList[type].list.push(...res.data.data.list);
+          console.log(this.GoodsList[type].list);
+        })
+      }
     }
   }
 </script>
@@ -168,8 +87,9 @@
   }
 
   .home-nav {
-    position: -webkit-sticky;
-    position: sticky;
+    position: fixed;
+    left: 0;
+    right: 0;
     top: 0;
     z-index: 9;
     background-color: var(--color-tint);
@@ -181,6 +101,7 @@
     position: -webkit-sticky;
     position: sticky;
     top: 44px;
-    z-index: 8;
+    background-color: #fff;
+    /* z-index: 8; */
   }
 </style>
