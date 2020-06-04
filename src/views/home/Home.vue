@@ -1,25 +1,34 @@
 <template>
   <div id="home" > 
-
-    <!-- nav-bar：公共组件 -->
+    <!-- nav-bar：公共 导航组件 -->
     <nav-bar class="home-nav">
       <div slot="center">美妆城</div>
     </nav-bar>
 
-    <!-- home-swiper：子组件 -->
-    <home-swiper :banners="banners"/>
 
-    <!-- recommed-view：子组件-->
-    <recommend-view :recommends="recommends"/>
+    <!-- better-scroll：公共 web滚动组件 -->
+    <Scroll class="content" ref="scroll" 
+            :probe-type="0" 
+            @scroll="backTopShow" 
+            :pullUpLoad="true"
+            @pullingUp="pullUpLoadMore">
+      <!-- home-swiper：子组件 -->
+      <home-swiper class="home-swiper" :banners="banners"/>
 
-    <!-- feature-view：子组件 -->
-    <feature-view/>
+      <!-- recommed-view：子组件-->
+      <recommend-view :recommends="recommends"/>
 
-    <!-- tab-control：业务公共组件 -->
-    <tab-control class="tab-control" :titles="titles"/>
+      <!-- feature-view：子组件 -->
+      <feature-view/>
 
-    <!--  -->
-    <goods-list :GoodsList="GoodsList['pop'].list" />
+      <!-- tab-control：业务 导航组件 -->
+      <tab-control class="tab-control" :titles="titles" @tabClick="tabClick"/>
+
+      <goods-list class="goods-list" :GoodsList="showGoods" />
+
+    </Scroll>
+
+    <back-top @click.native="backTopClick" v-show="isShow"/>
 
   </div>
 </template>
@@ -27,8 +36,10 @@
 <script>
   // 1.公共组件导入
   import NavBar from 'common/navbar/NavBar'
+  import Scroll from 'common/Scroll/Scroll'
   import TabControl from 'content/tabcontrol/TabControl'
   import GoodsList from 'content/goodslist/GoodsList'
+  import BackTop from 'content/backtop/BackTop.vue'
   // 2.子组件导入
   import HomeSwiper from './childComp/HomeSwiper'
   import RecommendView from './childComp/RecommendView'
@@ -42,6 +53,8 @@
       return {
         banners: null,
         recommends: null,
+        currentType: 'pop',
+        isShow: false,
         titles: ['流行', '新品', '精选'],
         GoodsList: {
           'pop' : {page : 0, list : []},
@@ -51,7 +64,19 @@
       }    
     },
     components:{
-      NavBar, HomeSwiper, RecommendView, FeatureView, TabControl, GoodsList
+      NavBar, 
+      HomeSwiper, 
+      RecommendView, 
+      FeatureView, 
+      TabControl, 
+      GoodsList, 
+      Scroll,
+      BackTop
+    },
+    computed:{
+      showGoods() {
+        return this.GoodsList[this.currentType].list;
+      }
     },
     created() {
       this.getHomeMultiData();
@@ -61,6 +86,32 @@
       this.getHomeGoodsList('sell');
     },
     methods: {
+      // 业务逻辑
+      tabClick(index) {
+        switch(index) {
+          case 0:
+            this.currentType = 'pop';
+            break;
+          case 1:
+            this.currentType = 'new';
+            break;
+          case 2: 
+          this.currentType = 'sell';
+          break;
+        }
+      },
+      backTopClick() {
+        this.$refs.scroll.scrollTo(0, 0);
+      },
+      backTopShow(position) {
+        // console.log(position);
+        this.isShow = (-position.y) > 537;
+      },
+      pullUpLoadMore() {
+        // console.log('上拉加载更多');
+        this.getHomeGoodsList(this.currentType);
+      },
+      // 网络请求
       getHomeMultiData() {
         getHomeMultiData().then(res => {
           // console.log(res.data.data.banner.list);
@@ -73,17 +124,22 @@
         const page = this.GoodsList[type].page + 1;
         getHomeGoodsList(type, page).then(res => {
           this.GoodsList[type].list.push(...res.data.data.list);
-          console.log(this.GoodsList[type].list);
+          // console.log(this.GoodsList[type].list);
+          this.GoodsList[type].page += 1;
+
+          this.$refs.scroll.finishPullUp();
         })
       }
-    }
+    },
+
   }
 </script>
 
 <style scoped>
   #home {
+    height: 100vh;
     width: 100%;
-    margin-bottom: 64px;
+    position: relative;
   }
 
   .home-nav {
@@ -97,11 +153,21 @@
     color: #fff;
   }
 
+
   .tab-control {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 44px;
     background-color: #fff;
-    /* z-index: 8; */
   }
+
+  .content {
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+
+  }
+
+
+
 </style>
