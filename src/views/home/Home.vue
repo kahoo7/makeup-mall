@@ -4,6 +4,7 @@
     <nav-bar class="home-nav">
       <div slot="center">美妆城</div>
     </nav-bar>
+    <tab-control class="tab-control" :titles="titles" @tabClick="tabClick"/>
 
 
     <!-- 

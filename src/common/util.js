@@ -6,4 +6,4 @@ export function debounce(func, dalay) {
       func.apply(this, args);
     }, dalay)
   }
-  
+}
