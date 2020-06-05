@@ -6,9 +6,13 @@
     </nav-bar>
 
 
-    <!-- better-scroll：公共 web滚动组件 -->
+    <!-- 
+      better-scroll：公共 web滚动组件 
+      probeType可选值：0/1/2/3 （0代表取消滚动监听）
+      pullUpLoad可选值：true/false （false代表取消上拉监听）
+    -->
     <Scroll class="content" ref="scroll" 
-            :probe-type="0" 
+            :probe-type="3" 
             @scroll="backTopShow" 
             :pullUpLoad="true"
             @pullingUp="pullUpLoadMore">
@@ -46,6 +50,7 @@
   import FeatureView from './childComp/FeatureView'
   // 3.功能函数导入
   import { getHomeMultiData, getHomeGoodsList } from 'network/home'
+  import { debounce } from '../../common/util'
   // 4.本组件对象
   export default {
     name: 'Home',
@@ -84,6 +89,13 @@
       this.getHomeGoodsList('pop');
       this.getHomeGoodsList('new');
       this.getHomeGoodsList('sell');
+    },
+    mounted() {
+      const refresh = debounce(this.$refs.scroll.refresh, 200);
+
+      this.$bus.$on('imageLoad', () => {
+        refresh();
+      })
     },
     methods: {
       // 业务逻辑
@@ -126,7 +138,7 @@
           this.GoodsList[type].list.push(...res.data.data.list);
           // console.log(this.GoodsList[type].list);
           this.GoodsList[type].page += 1;
-
+          // 等待图片加载完成再对scroll调用finishPullUp结束本次上拉
           this.$refs.scroll.finishPullUp();
         })
       }

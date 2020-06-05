@@ -1,7 +1,9 @@
 <template>
   <div>
 		<div class="wrapper">
-
+      <div class="content">
+        <p>分类</p>
+      </div>
     </div>
   </div>
 </template>

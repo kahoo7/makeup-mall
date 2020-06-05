@@ -27,10 +27,14 @@
     },
     methods:{
       scrollTo(x, y, time=300) {
-        this.scroll.scrollTo(x, y, time);
+        this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time);
       },
       finishPullUp() {
-        this.scroll.finishPullUp();
+        this.scroll && this.scroll.finishPullUp && this.scroll.finishPullUp();
+      },
+      refresh() {
+        console.log('imageLoad');
+        this.scroll && this.scroll.refresh && this.scroll.refresh();
       }
     },
     mounted() {
@@ -40,15 +44,19 @@
         pullUpLoad: this.pullUpLoad
       })
 
-      this.scroll.on('scroll', (position) => {
-        // console.log(position);
-        this.$emit('scroll', position);
-      })
+      if(probeType == 2 || probeType == 3) {
+          this.scroll.on('scroll', (position) => {
+          this.$emit('scroll', position);
+        })
+      }
 
-      this.scroll.on('pullingUp', () => {
-        // console.log('上拉加载');
-        this.$emit('pullingUp');        
-      })
+      if (pullUpLoad) {
+          this.scroll.on('pullingUp', () => {
+          // console.log('上拉加载');
+          this.$emit('pullingUp');        
+        })
+      }
+
     }
   }
 </script>
