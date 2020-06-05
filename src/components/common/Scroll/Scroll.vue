@@ -26,6 +26,9 @@
       }
     },
     methods:{
+      getPositionY(){
+        return this.scroll ? this.scroll.y : 0;
+      },
       scrollTo(x, y, time=300) {
         this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time);
       },
@@ -33,7 +36,7 @@
         this.scroll && this.scroll.finishPullUp && this.scroll.finishPullUp();
       },
       refresh() {
-        console.log('GoodsImageLoad');
+        // console.log('GoodsImageLoad');
         this.scroll && this.scroll.refresh && this.scroll.refresh();
       }
     },

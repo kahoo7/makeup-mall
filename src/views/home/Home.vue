@@ -4,8 +4,8 @@
     <nav-bar class="home-nav">
       <div slot="center">美妆城</div>
     </nav-bar>
-    <tab-control class="tab-control" :titles="titles" @tabClick="tabClick"/>
 
+    <tab-control class="tab-control" ref="tabcontrol1" :titles="titles" @tabClick="tabClick" v-show="isShow"/>
 
     <!-- 
       better-scroll：公共 web滚动组件 
@@ -14,11 +14,11 @@
     -->
     <Scroll class="content" ref="scroll" 
             :probe-type="3" 
-            @scroll="backTopShow" 
+            @scroll="contentScroll" 
             :pullUpLoad="true"
             @pullingUp="pullUpLoadMore">
       <!-- home-swiper：子组件 -->
-      <home-swiper class="home-swiper" :banners="banners"/>
+      <home-swiper class="home-swiper" :banners="banners" @swiperImageLoad="swiperImageLoad"/>
 
       <!-- recommed-view：子组件-->
       <recommend-view :recommends="recommends"/>
@@ -27,7 +27,7 @@
       <feature-view/>
 
       <!-- tab-control：业务 导航组件 -->
-      <tab-control class="tab-control" :titles="titles" @tabClick="tabClick"/>
+      <tab-control ref="tabcontrol2" :titles="titles" @tabClick="tabClick"/>
 
       <goods-list class="goods-list" :GoodsList="showGoods" />
 
@@ -61,6 +61,14 @@
         recommends: null,
         currentType: 'pop',
         isShow: false,
+        saveY: {
+          type: Number,
+          default: 0
+        },
+        tabOffsetTop: {
+          type: Number,
+          default: 0
+        },
         titles: ['流行', '新品', '精选'],
         GoodsList: {
           'pop' : {page : 0, list : []},
@@ -83,6 +91,16 @@
       showGoods() {
         return this.GoodsList[this.currentType].list;
       }
+    },
+    activated() {
+      // console.log('activeated');
+      this.$refs.scroll.scrollTo(0, this.saveY, 0);
+      this.$refs.scroll.refresh();
+    },
+    deactivated() {
+      // console.log('deactivated');
+      this.saveY = this.$refs.scroll.getPositionY();
+      // console.log(this.saveY);
     },
     created() {
       this.getHomeMultiData();
@@ -112,17 +130,25 @@
           this.currentType = 'sell';
           break;
         }
+        this.$refs.tabcontrol1.currentIndex = index;
+        this.$refs.tabcontrol2.currentIndex = index;
       },
       backTopClick() {
         this.$refs.scroll.scrollTo(0, 0);
       },
-      backTopShow(position) {
+      contentScroll(position) {
         // console.log(position);
         this.isShow = (-position.y) > 537;
+        
       },
       pullUpLoadMore() {
         // console.log('上拉加载更多');
         this.getHomeGoodsList(this.currentType);
+      },
+      swiperImageLoad(){
+        // console.log(this.$refs.tabcontrol2.$el.offsetTop);
+        this.tabOffsetTop = this.$refs.tabcontrol2.$el.offsetTop;
+        
       },
       // 网络请求
       getHomeMultiData() {
@@ -168,6 +194,9 @@
 
 
   .tab-control {
+    position: relative;
+    top: 44px;
+    z-index: 9;
     background-color: #fff;
   }
 
