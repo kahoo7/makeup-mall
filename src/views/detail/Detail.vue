@@ -5,7 +5,8 @@
       <detail-swiper :topImages="topImages"/>
       <detail-base-info :good="good"/>
       <detail-shop-info :shop="shop"/>
-      <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/> 
+      <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/>
+      <detail-goods-params :goodsParams="goodsParams"/>
     </scroll>
   </div>
 </template>
@@ -19,8 +20,9 @@
   import DetailBaseInfo from './childComp/DetailBaseInfo'
   import DetailShopInfo from './childComp/DetailShopInfo'
   import DetailGoodsInfo from './childComp/DetailGoodsInfo'
+  import DetailGoodsParams from './childComp/DetailGoodsParams'
   // 3.功能函数导入
-  import {getGoodsDetail, Goods, Shop} from 'network/detail'
+  import {getGoodsDetail, Goods, Shop, GoodsParams} from 'network/detail'
   // 4.本组件对象
   export default {
     name: 'Detail',
@@ -31,7 +33,8 @@
         good: {},
         result: {},
         topImages: {},
-        detailInfo: {}
+        detailInfo: {},
+        goodsParams: {},
       }
     },
     components: {
@@ -40,6 +43,7 @@
       DetailBaseInfo, 
       DetailShopInfo,
       DetailGoodsInfo, 
+      DetailGoodsParams,
       Scroll
     },
     created() {
@@ -68,7 +72,7 @@
           // 商品详情
           this.detailInfo = this.result.detailInfo;
           // 商品参数
-          
+          this.goodsParams = new GoodsParams(this.result.itemParams.info, this.result.itemParams.rule)
         })
       }
     },
