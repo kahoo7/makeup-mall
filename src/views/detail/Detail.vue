@@ -67,6 +67,8 @@
           this.shop = new Shop(this.result.shopInfo);
           // 商品详情
           this.detailInfo = this.result.detailInfo;
+          // 商品参数
+          
         })
       }
     },

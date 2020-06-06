@@ -31,7 +31,7 @@
 
   .detail-swiper img {
     position: relative;
-    bottom: 12%;
+    bottom: 7%;
   }
 
 </style>

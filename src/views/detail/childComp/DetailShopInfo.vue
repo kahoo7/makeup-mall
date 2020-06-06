@@ -62,7 +62,7 @@
 
 <style scoped>
   .detail-shop-info {
-    padding: 25px 8px;
+    padding: 25px 20px;
     border-top: 5px solid #f2f6f8;
     border-bottom: 5px solid #f2f6f8;
   }

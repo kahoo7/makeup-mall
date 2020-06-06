@@ -50,8 +50,10 @@
     letter-spacing: 3px;
   }
   .key {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     text-align: center;
+    letter-spacing: 10px;
+    color: var(--color-high-text);
   }
   .detail-images-list{
     margin-top: 10px;
