@@ -186,7 +186,7 @@
     left: 0;
     right: 0;
     top: 0;
-    z-index: 9;
+    z-index: 8;
     background-color: var(--color-tint);
     text-align: center;
     color: #fff;
@@ -207,9 +207,5 @@
     left: 0;
     right: 0;
     overflow: hidden;
-
   }
-
-
-
 </style>

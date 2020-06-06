@@ -1,5 +1,5 @@
 <template>
-  <swiper>
+  <swiper class="detail-swiper">
     <swiper-item v-for="(item, index) in topImages" :key="index">
       <img :src="item" alt="">
     </swiper-item>
@@ -24,5 +24,14 @@
 </script>
 
 <style scoped>
+  .detail-swiper {
+    height: 60vh;
+    overflow: hidden;
+  }
+
+  .detail-swiper img {
+    position: relative;
+    bottom: 12%;
+  }
 
 </style>

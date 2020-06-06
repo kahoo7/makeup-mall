@@ -39,10 +39,6 @@
         this.$router.back();
       }
     },
-    mounted() {
-      console.log(this.title);
-      
-    }
   }
 </script>
 
