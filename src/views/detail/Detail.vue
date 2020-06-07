@@ -2,11 +2,12 @@
   <div id="detail">
     <detail-nav-bar/>
     <scroll class="content" ref="detailScroll">
-      <detail-swiper :topImages="topImages"/>
+      <detail-swiper :top-images="topImages"/>
       <detail-base-info :good="good"/>
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/>
-      <detail-goods-params :goodsParams="goodsParams"/>
+      <detail-goods-params :goods-params="goodsParams"/>
+      <detail-comment-info :comment-info="commentInfo"/>
     </scroll>
   </div>
 </template>
@@ -21,6 +22,7 @@
   import DetailShopInfo from './childComp/DetailShopInfo'
   import DetailGoodsInfo from './childComp/DetailGoodsInfo'
   import DetailGoodsParams from './childComp/DetailGoodsParams'
+  import DetailCommentInfo from './childComp/DetailCommentInfo';
   // 3.功能函数导入
   import {getGoodsDetail, Goods, Shop, GoodsParams} from 'network/detail'
   // 4.本组件对象
@@ -35,6 +37,7 @@
         topImages: {},
         detailInfo: {},
         goodsParams: {},
+        commentInfo: {}
       }
     },
     components: {
@@ -44,6 +47,7 @@
       DetailShopInfo,
       DetailGoodsInfo, 
       DetailGoodsParams,
+      DetailCommentInfo,
       Scroll
     },
     created() {
@@ -54,14 +58,14 @@
     methods: {
       // 业务逻辑
       imageLoad() {
-        console.log('imageLoad');
+        // console.log('imageLoad');
         this.$refs.detailScroll.refresh();
       },
       // 网络请求
       getGoodsDetail(iid) {
         getGoodsDetail(iid).then(res => {
           this.result = res.data.result;
-          // console.log(this.result);
+          console.log(this.result.rate.cRate);
           
           // 商品轮播图
           this.topImages = res.data.result.itemInfo.topImages;
@@ -73,6 +77,10 @@
           this.detailInfo = this.result.detailInfo;
           // 商品参数
           this.goodsParams = new GoodsParams(this.result.itemParams.info, this.result.itemParams.rule)
+          // 评论信息
+          if(this.result.rate.list) {
+            this.commentInfo = this.result.rate.list[0];
+          }
         })
       }
     },

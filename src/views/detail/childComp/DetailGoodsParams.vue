@@ -1,9 +1,9 @@
 <template>
-  <div id="detail-goods-params">
+  <div id="detail-goods-params" v-if="Object.keys(goodsParams).length !== 0">
     <div class="topic">产品参数：</div>
-    <table class="info-size">
-      <tr v-for="(item, index) in goodsParams.sizes[0]" :key="index">
-        <td v-for="info in item" :key="info">{{info}}</td>
+    <table class="info-size" v-for="(table, index) in goodsParams.sizes" :key="index" >
+      <tr v-for="(tr, indey) in table" :key="indey">
+        <td v-for="(td, indez) in tr" :key="indez">{{td}}</td>
       </tr>
     </table>
     <table class="info-params">
@@ -37,6 +37,9 @@
 </script>
 
 <style scoped>
+  #detail-goods-params {
+    border-bottom: 5px solid #f2f6f8;
+  }
   table {
     font-size: 13px;
   }
@@ -57,7 +60,7 @@
     display: flex;
     height: 40px;
     line-height: 40px;
-    border-bottom: 1px solid #cccccc;
+    border-bottom: 1px solid lightgrey;
   }
   .info-size tr td {
     flex: 1;
@@ -67,11 +70,11 @@
     margin: auto;
     width: 90%;
     height: 40px;
-    text-align: center;
     line-height: 40px;
+    border-collapse: collapse;
   }
   .info-params tr td {
-    border-bottom: 1px solid #cccccc;
+    border-bottom: 1px solid lightgrey;
   }
   .info-key {
     width: 20%;
