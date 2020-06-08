@@ -9,7 +9,6 @@ export function debounce(func, dalay) {
 }
 
 export function formatTime(timeStamp) {
-  timeStamp = timeStamp * 1000;
   let totalTime = new Date(+timeStamp);
   let obj = {
     years: totalTime.getFullYear(),

@@ -1,22 +1,24 @@
 <template>
-  <div class="comment" v-if="Object.keys(commentInfo).length !== 0">
-    <div class="comment-top">
-      <span class="top-left">用户评价</span>
-      <span class="top-right">更多</span>
-    </div>
-    <div class="comment-middle">
-      <div class="user-info">
-        <img :src="commentInfo.user.avatar" alt="">
-        <span class="uname">{{commentInfo.user.uname}}</span>
+  <div>
+    <div class="comment" v-if="Object.keys(commentInfo).length !== 0">
+      <div class="comment-top">
+        <span class="top-left">用户评价</span>
+        <span class="top-right">更多</span>
       </div>
-      <p class="comment-text">{{commentInfo.content}}</p>
-    </div>
-    <div class="comment-bottom">
-      <span class="date">{{commentInfo.created | showFormatTime}}</span>
-      <span>{{commentInfo.style}}</span>
-    </div>
-    <div class="comment-images" v-if="commentInfo.images.length !== 0">
-      <img v-for="(item, index) in commentInfo.images" :key="index" :src="item" alt="">
+      <div class="comment-middle">
+        <div class="user-info">
+          <img :src="commentInfo.user.avatar" alt="">
+          <span class="uname">{{commentInfo.user.uname}}</span>
+        </div>
+        <p class="comment-text">{{commentInfo.content}}</p>
+      </div>
+      <div class="comment-bottom">
+        <span class="date">{{commentInfo.created | showFormatTime}}</span>
+        <span>{{commentInfo.style}}</span>
+      </div>
+      <div class="comment-images" v-if="commentInfo.images.length !== 0">
+        <img v-for="(item, index) in commentInfo.images" :key="index" :src="item" alt="">
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +41,7 @@
     },
     filters: {
       showFormatTime: function(value) {
-        let fmt = formatTime(value);
+        let fmt = formatTime(value*1000);
         return fmt;
       }
     }
