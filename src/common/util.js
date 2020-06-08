@@ -1,4 +1,4 @@
-export function debounce(func, dalay) {
+export function debounce(func, dalay=100) {
   let timer = null
   return function(...args) {
     if (timer) clearTimeout(timer)

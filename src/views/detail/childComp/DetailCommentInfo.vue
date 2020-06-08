@@ -65,7 +65,7 @@
     justify-content: space-between;
   }
   .user-info {
-    margin: 10px;
+    margin: 10px 0;
     display: flex;
     align-items: center;
     line-height: 45px;

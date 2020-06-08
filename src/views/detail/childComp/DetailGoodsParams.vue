@@ -52,20 +52,21 @@
     margin: auto;
     display: table;
     width: 90%;
+    height: 40px;
+    line-height: 40px;
     /* border-bottom: 1px solid #cccccc; */
     border-spacing: 2px;
+    border-collapse: collapse;
     border-color: grey;
   }
   .info-size tr {
     display: flex;
-    height: 40px;
-    line-height: 40px;
     border-bottom: 1px solid lightgrey;
   }
   .info-size tr td {
     flex: 1;
   }
-  .info-params{
+  .info-params {
     margin-top: 30px;
     margin: auto;
     width: 90%;

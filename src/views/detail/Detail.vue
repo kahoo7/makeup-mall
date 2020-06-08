@@ -1,20 +1,26 @@
 <template>
   <div id="detail">
-    <detail-nav-bar/>
-    <scroll class="content" ref="detailScroll">
+    <detail-nav-bar @titleClick="titleClick" ref="nav"/>
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="scrollListener">
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :good="good"/>
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/>
-      <detail-goods-params :goods-params="goodsParams"/>
-      <detail-comment-info :comment-info="commentInfo"/>
+      <detail-goods-params ref="params" :goods-params="goodsParams"/>
+      <detail-comment-info ref="comment" :comment-info="commentInfo"/>
+      <goods-list class="recommend" ref="recommend" :GoodsList="recommend"/>
+      <div class="end">
+        <p>再往下拉就没有了QAQ</p>
+      </div>
     </scroll>
+    <detail-bottom-bar class="bottom-bar"/>
   </div>
 </template>
 
 <script>
   // 1.公共组件导入
   import Scroll from 'common/Scroll/Scroll'
+  import GoodsList from 'content/goodslist/GoodsList'
   // 2.子组件导入
   import DetailNavBar from './childComp/DetailNavBar'
   import DetailSwiper from './childComp/DetailSwiper'
@@ -22,9 +28,12 @@
   import DetailShopInfo from './childComp/DetailShopInfo'
   import DetailGoodsInfo from './childComp/DetailGoodsInfo'
   import DetailGoodsParams from './childComp/DetailGoodsParams'
-  import DetailCommentInfo from './childComp/DetailCommentInfo';
+  import DetailCommentInfo from './childComp/DetailCommentInfo'
+  import DetailBottomBar from './childComp/DetailBottomBar'
   // 3.功能函数导入
-  import {getGoodsDetail, Goods, Shop, GoodsParams} from 'network/detail'
+  import {getGoodsDetail, getRecommends, Goods, Shop, GoodsParams} from 'network/detail'
+  import { debounce } from '../../common/util'
+  import { itemListenerMixin } from '../../common/mixins'
   // 4.本组件对象
   export default {
     name: 'Detail',
@@ -37,9 +46,14 @@
         topImages: {},
         detailInfo: {},
         goodsParams: {},
-        commentInfo: {}
+        commentInfo: {},
+        recommend: [],
+        themeTop: [],
+        getThemeTop: null,
+        currentIndex: 0
       }
     },
+    mixins:[itemListenerMixin],
     components: {
       DetailNavBar, 
       DetailSwiper, 
@@ -48,28 +62,64 @@
       DetailGoodsInfo, 
       DetailGoodsParams,
       DetailCommentInfo,
+      DetailBottomBar,
+      GoodsList,
       Scroll
     },
     created() {
       this.iid = this.$route.query.iid;
       // console.log(this.iid);
       this.getGoodsDetail(this.iid);
+      this.getThemeTop = debounce(() => {
+        this.themeTop = [];
+        this.themeTop.push(0);
+        this.themeTop.push(this.$refs.params.$el.offsetTop);
+        this.themeTop.push(this.$refs.comment.$el.offsetTop);
+        this.themeTop.push(this.$refs.recommend.$el.offsetTop);
+        this.themeTop.push(Number.MAX_VALUE)
+
+        console.log(this.themeTop);
+      })
+    },
+    destroyed() {
+      this.$bus.$off('imageLoad', this.detailImgListener);
+    },
+    mounted() {
     },
     methods: {
       // 业务逻辑
+      scrollListener() {
+        // console.log(this.$refs.scroll.getPositionY());
+        const newPositionY = -this.$refs.scroll.getPositionY();
+        const length = this.themeTop.length;
+        for(let i = 0;i < length;i++) {
+          if(this.currentIndex !== i && ((i < length - 1 && newPositionY >= this.themeTop[i] && newPositionY < this.themeTop[i+1]))) {
+            this.currentIndex = i;
+            // console.log(this.currentIndex);
+            this.$refs.nav.currentIndex = this.currentIndex;
+          }
+        }
+        
+      },
+      titleClick(index) {
+        // console.log('titleClick');
+        // console.log(index);
+        this.$refs.scroll.scrollTo(0, -this.themeTop[index]);
+      },
       imageLoad() {
         // console.log('imageLoad');
-        this.$refs.detailScroll.refresh();
+        this.$refs.scroll.refresh();
         // console.log('refresh');
+        this.getThemeTop();
       },
       // 网络请求
       getGoodsDetail(iid) {
         getGoodsDetail(iid).then(res => {
-          this.result = res.data.result;
-          // console.log(this.result.rate.cRate);
+          this.result = res.result;
+          // console.log(res.result);
 
           // 商品轮播图
-          this.topImages = res.data.result.itemInfo.topImages;
+          this.topImages = res.result.itemInfo.topImages;
           // 商品信息对象
           this.good = new Goods(this.result.itemInfo, this.result.columns, this.result.shopInfo.services);
           // 商家店铺信息对象
@@ -82,6 +132,15 @@
           if(this.result.rate.list) {
             this.commentInfo = this.result.rate.list[0];
           }
+          // 推荐商品
+          this.getRecommends();
+
+        })
+      },
+      getRecommends() {
+        getRecommends().then(res => {
+          // console.log(res.data.list);
+          this.recommend = res.data.list;
         })
       }
     },
@@ -100,5 +159,21 @@
   .content {
     height: calc(100% - 44px);
     overflow: hidden;
+  }
+  .recommend {
+    margin-top: 20px;
+  }
+  .end {
+    display: block;
+    margin: auto;
+    margin-top: 100px;
+    margin-bottom: 10px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+  }
+  .bottom-bar {
+
+    /* background-color: red; */
   }
 </style>

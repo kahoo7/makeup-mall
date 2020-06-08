@@ -3,8 +3,6 @@
       <div v-if="!isActive"><slot name="item-icon"></slot></div>
       <div v-else><slot name="item-icon-active"></slot></div>
       <div :style="activeStyle"><slot name="item-name"></slot></div>
-     <!-- <img src="../../assets/images/tabbar/home.png" alt="home.png"> -->
-     <!-- <div>首页</div> -->
     </div>
 </template>
 

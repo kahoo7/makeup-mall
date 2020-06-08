@@ -52,6 +52,7 @@
   // 3.功能函数导入
   import { getHomeMultiData, getHomeGoodsList } from 'network/home'
   import { debounce } from '../../common/util'
+  import { itemListenerMixin } from '../../common/mixins'
   // 4.本组件对象
   export default {
     name: 'Home',
@@ -77,6 +78,7 @@
         }
       }    
     },
+    mixins:[itemListenerMixin],
     components:{
       NavBar, 
       HomeSwiper, 
@@ -101,6 +103,7 @@
       // console.log('deactivated');
       this.saveY = this.$refs.scroll.getPositionY();
       // console.log(this.saveY);
+      this.$bus.$off('imageLoad', this.homeImgListener);
     },
     created() {
       this.getHomeMultiData();
@@ -110,11 +113,6 @@
       this.getHomeGoodsList('sell');
     },
     mounted() {
-      const refresh = debounce(this.$refs.scroll.refresh, 200);
-
-      this.$bus.$on('imageLoad', () => {
-        refresh();
-      })
     },
     methods: {
       // 业务逻辑
@@ -153,16 +151,16 @@
       // 网络请求
       getHomeMultiData() {
         getHomeMultiData().then(res => {
-          // console.log(res.data.data.banner.list);
-          // console.log(res.data.data.recommend.list);
-          this.banners = res.data.data.banner.list;
-          this.recommends = res.data.data.recommend.list;
+          // console.log(res.data.banner.list);
+          // console.log(res.data.recommend.list);
+          this.banners = res.data.banner.list;
+          this.recommends = res.data.recommend.list;
         })
       },   
       getHomeGoodsList(type) {
         const page = this.GoodsList[type].page + 1;
         getHomeGoodsList(type, page).then(res => {
-          this.GoodsList[type].list.push(...res.data.data.list);
+          this.GoodsList[type].list.push(...res.data.list);
           // console.log(this.GoodsList[type].list);
           this.GoodsList[type].page += 1;
           // 等待图片加载完成再对scroll调用finishPullUp结束本次上拉

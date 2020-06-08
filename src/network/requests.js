@@ -9,7 +9,15 @@ export function requests(config) {
   // 2.axios拦截器
   instance.interceptors.request.use(config => {
     // console.log(config);
-    return config
+    // console.log('request interceptors');
+    return config;
+  }, err => {
+    console.log(err);
+  })
+
+  instance.interceptors.response.use(config => {
+    // console.log('response interceptors');
+    return config.data;
   }, err => {
     console.log(err);
   })
