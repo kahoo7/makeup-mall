@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="comment-wrapper">
     <div class="comment" v-if="Object.keys(commentInfo).length !== 0">
       <div class="comment-top">
         <span class="top-left">用户评价</span>
@@ -16,7 +16,7 @@
         <span class="date">{{commentInfo.created | showFormatTime}}</span>
         <span>{{commentInfo.style}}</span>
       </div>
-      <div class="comment-images" v-if="commentInfo.images.length !== 0">
+      <div class="comment-images" v-if="commentInfo.images">
         <img v-for="(item, index) in commentInfo.images" :key="index" :src="item" alt="">
       </div>
     </div>
@@ -49,11 +49,14 @@
 </script>
 
 <style scoped>
+  .comment-wrapper {
+    border-bottom: 5px solid #f2f6f8;
+  }
   .comment {
     margin: auto;
     margin-top: 20px;
+    padding-bottom: 20px;
     width: 90%;
-    border-bottom: 5px solid #f2f6f8;
   }
   .comment-top {
     display: flex;
@@ -73,7 +76,7 @@
     border-radius: 50%;
   }
   .comment-middle p {
-    margin: 20px;
+    margin: 20px 0;
     color: #777;
     font-size: 14px;
     line-height: var(--line-height);

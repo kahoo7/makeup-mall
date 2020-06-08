@@ -60,13 +60,14 @@
       imageLoad() {
         // console.log('imageLoad');
         this.$refs.detailScroll.refresh();
+        // console.log('refresh');
       },
       // 网络请求
       getGoodsDetail(iid) {
         getGoodsDetail(iid).then(res => {
           this.result = res.data.result;
-          console.log(this.result.rate.cRate);
-          
+          // console.log(this.result.rate.cRate);
+
           // 商品轮播图
           this.topImages = res.data.result.itemInfo.topImages;
           // 商品信息对象
