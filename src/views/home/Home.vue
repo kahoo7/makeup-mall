@@ -14,7 +14,7 @@
     -->
     <Scroll class="content" ref="scroll" 
             :probe-type="3" 
-            @scroll="contentScroll" 
+            @scroll="contentScrollY" 
             :pullUpLoad="true"
             @pullingUp="pullUpLoadMore">
       <!-- home-swiper：子组件 -->
@@ -44,7 +44,7 @@
   import Scroll from 'common/Scroll/Scroll'
   import TabControl from 'content/tabcontrol/TabControl'
   import GoodsList from 'content/goodslist/GoodsList'
-  import BackTop from 'content/backtop/BackTop.vue'
+  // import BackTop from 'content/backtop/BackTop'
   // 2.子组件导入
   import HomeSwiper from './childComp/HomeSwiper'
   import RecommendView from './childComp/RecommendView'
@@ -52,7 +52,7 @@
   // 3.功能函数导入
   import { getHomeMultiData, getHomeGoodsList } from 'network/home'
   import { debounce } from '../../common/util'
-  import { itemListenerMixin } from '../../common/mixins'
+  import { itemListenerMixin, backTopMixin } from '../../common/mixins'
   // 4.本组件对象
   export default {
     name: 'Home',
@@ -61,7 +61,7 @@
         banners: null,
         recommends: null,
         currentType: 'pop',
-        isShow: false,
+        // isShow: false,
         saveY: {
           type: Number,
           default: 0
@@ -78,7 +78,7 @@
         }
       }    
     },
-    mixins:[itemListenerMixin],
+    mixins:[itemListenerMixin, backTopMixin],
     components:{
       NavBar, 
       HomeSwiper, 
@@ -87,7 +87,7 @@
       TabControl, 
       GoodsList, 
       Scroll,
-      BackTop
+      // BackTop
     },
     computed:{
       showGoods() {
@@ -131,13 +131,12 @@
         this.$refs.tabcontrol1.currentIndex = index;
         this.$refs.tabcontrol2.currentIndex = index;
       },
-      backTopClick() {
-        this.$refs.scroll.scrollTo(0, 0);
-      },
-      contentScroll(position) {
+      // backTopClick() {
+      //   this.$refs.scroll.scrollTo(0, 0);
+      // },
+      contentScrollY(position) {
         // console.log(position);
         this.isShow = (-position.y) > 537;
-        
       },
       pullUpLoadMore() {
         // console.log('上拉加载更多');

@@ -36,7 +36,7 @@
   .bottom-bar {
     background-color: #fff;
     position: relative;
-    bottom: 58px;
+    /* bottom: 58px; */
     height: 58px;
 
     display: flex;

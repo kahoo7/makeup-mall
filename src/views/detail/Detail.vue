@@ -1,7 +1,7 @@
 <template>
   <div id="detail">
     <detail-nav-bar @titleClick="titleClick" ref="nav"/>
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="scrollListener">
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :good="good"/>
       <detail-shop-info :shop="shop"/>
@@ -14,6 +14,9 @@
       </div>
     </scroll>
     <detail-bottom-bar class="bottom-bar"/>
+
+    <back-top @click.native="backTopClick" v-show="isShow"/>
+
   </div>
 </template>
 
@@ -33,7 +36,7 @@
   // 3.功能函数导入
   import {getGoodsDetail, getRecommends, Goods, Shop, GoodsParams} from 'network/detail'
   import { debounce } from '../../common/util'
-  import { itemListenerMixin } from '../../common/mixins'
+  import { itemListenerMixin, backTopMixin } from '../../common/mixins'
   // 4.本组件对象
   export default {
     name: 'Detail',
@@ -53,7 +56,7 @@
         currentIndex: 0
       }
     },
-    mixins:[itemListenerMixin],
+    mixins:[itemListenerMixin, backTopMixin],
     components: {
       DetailNavBar, 
       DetailSwiper, 
@@ -78,7 +81,7 @@
         this.themeTop.push(this.$refs.recommend.$el.offsetTop);
         this.themeTop.push(Number.MAX_VALUE)
 
-        console.log(this.themeTop);
+        // console.log(this.themeTop);
       })
     },
     destroyed() {
@@ -88,9 +91,11 @@
     },
     methods: {
       // 业务逻辑
-      scrollListener() {
+      contentScroll() {
         // console.log(this.$refs.scroll.getPositionY());
         const newPositionY = -this.$refs.scroll.getPositionY();
+        this.isShow = newPositionY > 537;
+        
         const length = this.themeTop.length;
         for(let i = 0;i < length;i++) {
           if(this.currentIndex !== i && ((i < length - 1 && newPositionY >= this.themeTop[i] && newPositionY < this.themeTop[i+1]))) {
@@ -157,7 +162,7 @@
     background-color: #fff;
   }
   .content {
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 58px);
     overflow: hidden;
   }
   .recommend {
@@ -171,9 +176,5 @@
     height: 50px;
     line-height: 50px;
     text-align: center;
-  }
-  .bottom-bar {
-
-    /* background-color: red; */
   }
 </style>
