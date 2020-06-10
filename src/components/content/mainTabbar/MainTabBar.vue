@@ -11,7 +11,7 @@
         <img slot="item-icon-active" src="~assets/images/tabbar/categories_activate.svg" alt="">
         <div slot="item-name">分类</div>
       </tab-bar-item>
-			<tab-bar-item path="/shopcart" activeColor="pink">
+			<tab-bar-item path="/cart" activeColor="pink">
         <img slot="item-icon" src="~assets/images/tabbar/shopcar.png" alt="">
         <img slot="item-icon-active" src="~assets/images/tabbar/shopcar_activate.svg" alt="">
         <div slot="item-name">购物车</div>

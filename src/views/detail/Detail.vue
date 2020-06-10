@@ -2,6 +2,9 @@
   <div id="detail">
     <detail-nav-bar @titleClick="titleClick" ref="nav"/>
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
+      <!-- <div>
+        <p>{{$store.state.cartList}}</p>
+      </div> -->
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :good="good"/>
       <detail-shop-info :shop="shop"/>
@@ -13,7 +16,7 @@
         <p>再往下拉就没有了QAQ</p>
       </div>
     </scroll>
-    <detail-bottom-bar class="bottom-bar"/>
+    <detail-bottom-bar class="bottom-bar" @addToCart="addToCart"/>
 
     <back-top @click.native="backTopClick" v-show="isShow"/>
 
@@ -91,6 +94,17 @@
     },
     methods: {
       // 业务逻辑
+      addToCart() {
+        const product = {};
+        product.image = this.topImage ? this.topImages[0] : null;
+        product.title = this.good.title ? this.good.title : null;
+        product.desc = this.good.desc ? this.good.desc : null;
+        product.price = this.good.realPrice ? this.good.realPrice : null;
+        product.iid = this.iid ? this.iid : null;
+        // console.log('emit addTocart');
+        
+        this.$store.dispatch('addToCart', product);
+      },
       contentScroll() {
         // console.log(this.$refs.scroll.getPositionY());
         const newPositionY = -this.$refs.scroll.getPositionY();

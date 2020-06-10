@@ -19,9 +19,7 @@
       getDataFromMysql() {
         getDataFromMysql().then(res => {
           console.log(res);
-          console.log('here');
-          
-          
+          // console.log('here');          
         })
       }
     }

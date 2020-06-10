@@ -1,17 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var models = require('./db')
 
-var pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '123456',
-  database: 'database',
-  port: '3306'
-});
+var pool = mysql.createPool(models.mysql);
 
-
-/* GET createdb page. */
+/* GET test page. */
 router.get('/', function(req, res, next) {
   pool.getConnection((err, connection) => {
     if(err) throw err;
@@ -24,31 +18,6 @@ router.get('/', function(req, res, next) {
   });
 })
 
-// router.get('/', function(req, res, next) {
-//   pool.getConnection((err, connection) => {
-//     if(err) throw err;
-//     res.send(
-//       `
-//       <input type="text" name="uname"/>
-//       <input type="password" name="password"/>
-//       <a href="">提交</a>
-//       `
-//       );
-//     connection.release();
-//   })
-// })
-
-
-// router.get('/', (req, res, next) => {
-//   pool.getConnection((err, connection) => {
-//     if(err) throw err;
-//     res.json({
-//       name: 'sz',
-//       age: 12
-//     })
-//     connection.release();
-//   })
-// })
 
 
 router.post('/', function(req, res, next) {

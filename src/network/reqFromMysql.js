@@ -22,6 +22,41 @@ export function reqFromMysql(config) {
     console.log(err);
   })
 
+
   // 3.发送真正的网络请求 
   return instance(config)
+}
+
+
+//返回一个Promise(发送post请求)
+export function fetchPost(url, params) {
+  return new Promise((resolve, reject) => {
+    axios.defaults.baseURL = 'http://localhost:3000/';
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'; 
+    axios.post(url, params)
+      .then(response => {
+          resolve(response.data);
+      }, err => {
+          reject(err);
+      })
+      .catch((error) => {
+          reject(error)
+      })
+  })
+}
+////返回一个Promise(发送get请求)
+export function fetchGet(url, param) {
+  return new Promise((resolve, reject) => {
+    axios.defaults.baseURL = 'http://localhost:3000/';
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'; 
+    axios.get(url, {params: param})
+      .then(response => {
+          resolve(response.data)
+      }, err => {
+          reject(err)
+      })
+      .catch((error) => {
+          reject(error)
+      })
+  })
 }

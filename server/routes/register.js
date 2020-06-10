@@ -35,7 +35,7 @@ router.post('/', function(req, res, next) {
     // const results = 'Post Database';
     // res.send(results);
 
-    const sql = `SELECT password FROM user WHERE uname = ?;`
+    const sql = `INSERT IGNORE INTO user(uname, password) VALUES (?, ?)`;
     const params = req.body;
     connection.query(sql, [params.uname, params.password],
       (err, result) => {
@@ -43,18 +43,10 @@ router.post('/', function(req, res, next) {
           console.log(err);
         }
         if(result) {
-          // jsonWrite(res, result);
-          for(let i = 0;i < result.length;i++) {
-            console.log('请求回来！', result[i]);
-            console.log('请求结果!', typeof result[i],result[i].password);
-            if(result[i].password == params.password) {
-              res.send('密码正确，登录成功！')
-            }
-            res.end('密码错误，登录失败')
-          }
+          jsonWrite(res, result);
         }
       }) 
-    connection.end();
+    connection.release();
   })
 })
 
