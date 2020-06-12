@@ -103,7 +103,7 @@
       // console.log('deactivated');
       this.saveY = this.$refs.scroll.getPositionY();
       // console.log(this.saveY);
-      this.$bus.$off('imageLoad', this.homeImgListener);
+      this.$bus.$off('imageLoad', this.ImgListener);
     },
     created() {
       this.getHomeMultiData();

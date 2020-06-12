@@ -6,7 +6,14 @@ export default {
   },
   addCart(state, payload) {
     state.cartList.push(payload);
-    // console.log('addCart');
+    console.log(payload);
+    
+  },
+  accountLogin(state, payload) {
+    if(payload.loginFlag === true) {
+      state.userinfo = payload;
+    }
+    console.log(payload);
     
   }
 }

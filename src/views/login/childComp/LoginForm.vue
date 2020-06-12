@@ -11,7 +11,10 @@
         <input type="password" required="required" minlength="6" v-model="userInfo.password" />
       </label>
 
-      <span class="login-button" @click="loginClick">登录</span>
+      <div class="button">
+        <span class="button-item" @click="loginClick">登录</span>
+        <span class="button-item" @click="registerClick">注册</span>
+      </div>
     </form>
   </div>
 </template>
@@ -27,11 +30,17 @@ export default {
     return {
       userInfo: {
         uname: '',
-        password: ''
+        password: '',
+        loginFlag: false
       }
     }
   },
   methods: {
+    registerClick() {
+      this.$router.push('/register')
+      
+    },
+
     loginClick() {
       this.$emit('loginClick', this.userInfo);
     }
@@ -42,7 +51,7 @@ export default {
 <style scoped>
   input[type="text"],
   input[type="password"] {
-    width: 90%;
+    width: 95%;
     padding: 12px 16px;
     margin: 15px auto;
     text-align: center;
@@ -60,20 +69,26 @@ export default {
     transition: 0.25s;
   }
 
-  .login-button {
-    width: 80%;
+  .button {
+    width: 100%;
+    background-color: #fff;
+    margin: 30px auto;
+  }
+
+  .button-item {
+    margin: 15px auto;
     background-color: var(--color-tint);
-    display: block;
+    display: inline-block;
+    width: 100%;
+    padding: 14px 30px;
     color: white;
-    padding: 14px 20px;
-    margin: 50px auto;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
   }
 
-  .login-button:hover {
+  .button:hover {
     background: pink;
   }
 

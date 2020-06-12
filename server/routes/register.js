@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var models = require('./db')
+var $sql = require('./sqlMap');
 
 var pool = mysql.createPool(models.mysql);
 
@@ -35,9 +36,9 @@ router.post('/', function(req, res, next) {
     // const results = 'Post Database';
     // res.send(results);
 
-    const sql = `INSERT IGNORE INTO user(uname, password) VALUES (?, ?)`;
+    const sql = $sql.user.addUser;
     const params = req.body;
-    connection.query(sql, [params.uname, params.password],
+    connection.query(sql, [params.uname, params.password, params.gender],
       (err, result) => {
         if(err) {
           console.log(err);

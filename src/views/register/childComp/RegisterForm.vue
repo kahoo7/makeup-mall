@@ -3,7 +3,7 @@
     <form>
       <label>
       用户名：
-        <input type="text" v-model="userInfo.uname" />
+        <input type="text" v-model="userInfo.uname" required/>
       </label>
       性别：
       <label>
@@ -15,22 +15,15 @@
       </label>
       <br />
 
-      <!-- <label for="tel">手机号码：</label>
-      <input type="text" name="contact" id="tel" />
-
-      <label>
-        电子邮箱：
-        <input type="email" name="email"/>
-      </label> -->
 
       <label>
         密码：
-        <input type="password" v-model="userInfo.password" minlength="6" />
+        <input type="password" v-model="userInfo.password" minlength="6" required/>
       </label>
 
       <label>
         确认密码：
-        <input type="password" name="password2" minlength="6" />
+        <input type="password" v-model="userInfo.sec_password" minlength="6" required/>
       </label>
       
       <span class="register-button" @click="registerClick">注册</span>
@@ -50,8 +43,10 @@ export default {
       userInfo: {
         uname: '',
         password: '',
-        gender: ''
-      }
+        gender: '',
+        sec_password: ''
+      },
+      
     }
   },
   methods: {
@@ -59,7 +54,8 @@ export default {
       console.log(this.userInfo);
       
       this.$emit('registerClick', this.userInfo);
-    }
+    },
+
   }
 };
 </script>

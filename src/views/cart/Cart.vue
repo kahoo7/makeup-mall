@@ -6,27 +6,31 @@
     </nav-bar>
 
     <!-- 商品列表 -->
-    <cart-list class="cart-list"/>
+    <cart-list class="cart-list" :cart-list="cartList"/>
     <!-- 底部汇总 -->
+    <bottom-bar></bottom-bar>
   </div>
 </template>
 
 <script>
   // 1.公共组件导入
-  import Scroll from 'common/Scroll/Scroll'
   import NavBar from 'common/navbar/NavBar'
   // 2.子组件导入
   import CartList from './childComp/CartList'
-
+  import BottomBar from './childComp/BottomBar'
   export default {
     name: 'Cart',
     components: {
+      BottomBar,
       NavBar,
       CartList
     },
     computed: {
+      cartList() {
+        return this.$store.getters.cartList;
+      },
       cartLength() {
-        return this.$store.state.cartList.length;
+        return this.$store.getters.cartCount;
       }
     }
   }

@@ -88,7 +88,7 @@
       })
     },
     destroyed() {
-      this.$bus.$off('imageLoad', this.detailImgListener);
+      this.$bus.$off('imageLoad', this.ImgListener);
     },
     mounted() {
     },
@@ -96,7 +96,7 @@
       // 业务逻辑
       addToCart() {
         const product = {};
-        product.image = this.topImage ? this.topImages[0] : null;
+        product.image = this.topImages ? this.topImages[0] : null;
         product.title = this.good.title ? this.good.title : null;
         product.desc = this.good.desc ? this.good.desc : null;
         product.price = this.good.realPrice ? this.good.realPrice : null;

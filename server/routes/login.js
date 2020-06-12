@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var models = require('./db')
+var models = require('./db');
+var $sql = require('./sqlMap');
 
 var pool = mysql.createPool(models.mysql);
 
@@ -35,7 +36,7 @@ router.post('/', function(req, res, next) {
     // const results = 'Post Database';
     // res.send(results);
 
-    const sql = `SELECT password FROM user WHERE uname = ?;`
+    const sql = $sql.user.login;
     const params = req.body;
     connection.query(sql, [params.uname, params.password],
       (err, result) => {
@@ -45,16 +46,20 @@ router.post('/', function(req, res, next) {
         if(result) {
           // jsonWrite(res, result);
           for(let i = 0;i < result.length;i++) {
-            console.log('请求回来！', result[i]);
-            console.log('请求结果!', typeof result[i],result[i].password);
+            // console.log('请求回来！', result[i]);
+            // console.log('请求结果!', typeof result[i],result[i].password);
+            let loginFlag = false;
             if(result[i].password == params.password) {
-              res.send('密码正确，登录成功！')
+              loginFlag = true;
+              res.send(loginFlag);
+            } else {
+              res.send(loginFlag);
             }
-            res.end('密码错误，登录失败')
+            
           }
         }
       }) 
-    connection.end();
+    connection.release();
   })
 })
 

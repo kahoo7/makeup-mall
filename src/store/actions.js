@@ -7,6 +7,7 @@ export default {
       context.commit('addCount', oldProduct);
     } else {
       payload.count = 1;
+      payload.checked = true;
       context.commit('addCart', payload);
     }
   }
