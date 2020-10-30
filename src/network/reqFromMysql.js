@@ -6,7 +6,7 @@ export function reqFromMysql(config) {
     baseURL: 'http://localhost:3000/'
   })
 
-  // 2.axios拦截器 
+  // 2.axios拦截器
   instance.interceptors.request.use(config => {
     // console.log(config);
     // console.log('request interceptors');
